@@ -13,7 +13,16 @@ Rails.application.routes.draw do
     registrations: 'api/v1/users/registrations'
   }
 
-  get '/current_user', to: 'current_user#index'
+  namespace :api do
+    namespace :v1 do
+      get 'users/currentUser'
+      resources :users do
+        resources :posts do
+          resources :likes, :comments
+        end
+      end
+    end
+  end
 
-  # get '/auth/google_oauth2/callback', to 'session#create'
+  get '/current_user', to: 'current_user#index'
 end
