@@ -16,8 +16,10 @@ class Api::V1::PostsController < ApplicationController
 
   def create
     @post = current_user.posts.build(post_params)
-
+    # puts Rails.logger.debug(params.inspect)
     if @post.save
+      handle_image_uploads(@post)
+
       render json: @post
     else
       render error: { error: 'Unable to create a new Post' }, status: bad_request
@@ -29,6 +31,7 @@ class Api::V1::PostsController < ApplicationController
     @post = current_user.posts.find(params[:id])
     @like = Like.find_or_create_by(author: current_user, post: @post)
     render json: @like
+  end
 
   def update
     @post = current_user.posts.find(params[:id])
@@ -52,11 +55,11 @@ class Api::V1::PostsController < ApplicationController
   private
 
   def post_update
-    params.require(:post).permit(:title, :body)
+    params.require(:post).permit(:body)
   end
 
   def post_params
-    params.require(:post).permit(:title, :body, :author_id)
+    params.require(:post).permit(body: {})
   end
 
   def set_post
@@ -65,5 +68,22 @@ class Api::V1::PostsController < ApplicationController
 
   def authorize_post
     authorize @post
+  end
+
+  def handle_image_uploads(post)
+    editorjs_data = params[:post][:body]
+
+    uploaded_images = []
+
+    editorjs_data.each do |block|
+      if block['type'] == 'image'
+        image_data = block['data']
+        image_url = image_data['file']['url']
+
+        image = post.images.create(url: image_url)
+        uploaded_images << image
+      end
+    end
+    uploaded_images
   end
 end

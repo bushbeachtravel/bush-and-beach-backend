@@ -15,11 +15,13 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      get 'users/currentUser'
       resources :users do
         resources :posts do
           resources :likes, :comments
         end
+      end
+      resources :posts do
+        resources :likes, :comments
       end
     end
   end
