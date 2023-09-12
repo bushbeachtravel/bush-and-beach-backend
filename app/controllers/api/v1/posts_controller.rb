@@ -6,8 +6,8 @@ class Api::V1::PostsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
 
   def index
-    @posts = Post.all
-    render json: @posts
+    @posts = Post.includes(:author).all
+    render json: @posts.to_json(include: { author: { only: [:id, :name ] } })
   end
 
   def show

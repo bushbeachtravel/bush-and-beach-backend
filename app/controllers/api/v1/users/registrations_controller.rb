@@ -6,7 +6,7 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
   respond_to :json
 
-  REQUIRED_PARAMETERS = %i[name email password password_confirmation type].freeze
+  REQUIRED_PARAMETERS = %i[name email password password_confirmation].freeze
 
   private
 
