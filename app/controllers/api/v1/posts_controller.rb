@@ -17,9 +17,7 @@ class Api::V1::PostsController < ApplicationController
 
   def create
     @post = current_user.posts.build(post_params)
-    puts Rails.logger.debug(params.inspect)
     if @post.save
-      # handle_image_uploads(@post)
 
       render json: @post
     else
@@ -66,21 +64,4 @@ class Api::V1::PostsController < ApplicationController
   def set_post
     @post = Post.find(params[:id])
   end
-
-  # def handle_image_uploads(post)
-  #   editorjs_data = params[:post][:body]
-
-  #   uploaded_images = []
-
-  #   editorjs_data.each do |block|
-  #     if block['type'] == 'image'
-  #       image_data = block['data']
-  #       image_url = image_data['file']['url']
-
-  #       image = post.images.create(url: image_url)
-  #       uploaded_images << image
-  #     end
-  #   end
-  #   uploaded_images
-  # end
 end
