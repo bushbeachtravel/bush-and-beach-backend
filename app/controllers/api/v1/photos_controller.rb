@@ -1,9 +1,11 @@
+require_relative '../../../representers/photo_representer'
 class Api::V1::PhotosController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_photo, only: %i[show edit update destroy]
+
   def index
-    @photos = Photo.allow
-    render json: @photos
+    @photos = Photo.all
+    render json: PhotoRepresenter.new(@photos).as_json
   end
 
   def show
@@ -51,6 +53,6 @@ class Api::V1::PhotosController < ApplicationController
   end
 
   def photo_params
-    params.require(:photo).permit(:title, :image)
+    params.permit(:title, :image)
   end
 end

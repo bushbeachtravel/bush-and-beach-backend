@@ -13,11 +13,20 @@ Rails.application.routes.draw do
     registrations: 'api/v1/users/registrations'
   }
 
+  namespace :api do
+    namespace :v1 do
+      resources :users do
+        resources :posts, only: %i[create update destroy] do
+          resources :likes, :comments
+        end
+        resources :photos, only: %i[create update destroy]
+      end
+      resources :posts, only: %i[show index] do
+        resources :likes, :comments
+      end
+      resources :photos, only: %i[show index]
+    end
+  end
+
   get '/current_user', to: 'current_user#index'
-
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
-  # get '/auth/google_oauth2/callback', to 'session#create'
 end
