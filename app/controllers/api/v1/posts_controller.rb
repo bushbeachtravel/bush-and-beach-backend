@@ -7,7 +7,7 @@ class Api::V1::PostsController < ApplicationController
 
   def index
     @posts = Post.includes(:author).all
-    render json: @posts.to_json(include: { author: { only: [:id, :name ] } })
+    render json: @posts.to_json(include: { author: { only: [:id, :name] } })
   end
 
   def show
