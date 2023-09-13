@@ -27,6 +27,5 @@ Rails.application.routes.draw do
       resources :photos, only: %i[show index]
     end
   end
-
   get '/current_user', to: 'current_user#index'
 end
