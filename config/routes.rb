@@ -28,4 +28,5 @@ Rails.application.routes.draw do
     end
   end
   get '/current_user', to: 'current_user#index'
+  get '/users', to:  'current_user#all'
 end
