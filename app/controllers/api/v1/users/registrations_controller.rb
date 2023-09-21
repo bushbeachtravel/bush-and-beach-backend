@@ -12,7 +12,7 @@ class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
 
   def respond_with(resource, _opts = {})
     if request.method == 'POST'
-      permitted_params = params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      permitted_params = params.require(:user).permit(:name, :email, :password, :password_confirmation, :admin)
       if all_parameters_exist?(permitted_params)
         if resource.persisted?
           render json: {
